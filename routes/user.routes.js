@@ -4,7 +4,8 @@ import verifyFirebase from "../middleware/verifyFirebase.js";
 
 const router = express.Router();
 
-router.post("/save", verifyFirebase, saveUser);
+router.post("/save", saveUser);
+
 router.get("/", verifyFirebase, getUsers);
 
 export default router;
