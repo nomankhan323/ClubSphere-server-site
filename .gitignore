@@ -1,0 +1,7 @@
+<<<<<<< HEAD
+# Ignore secret files
+.env
+serviceAccountKey.json
+=======
+serviceAccountKey.json
+>>>>>>> 5a56936 (Removed secret file from repo)
