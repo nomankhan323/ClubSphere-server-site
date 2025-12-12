@@ -1,11 +1,8 @@
-import express from "express";
 import Club from "../models/Club.js";
 import Event from "../models/Event.js";
 import Membership from "../models/Membership.js";
 
-const router = express.Router();
-
-router.get("/stats", async (req, res) => {
+export const getDashboardStats = async (req, res) => {
     try {
         const totalClubs = await Club.countDocuments();
         const totalEvents = await Event.countDocuments();
@@ -14,13 +11,9 @@ router.get("/stats", async (req, res) => {
         res.json({
             totalClubs,
             totalEvents,
-            totalMembers
+            totalMembers,
         });
-
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
         res.status(500).json({ message: "Server Error" });
     }
-});
-
-export default router;
+};
