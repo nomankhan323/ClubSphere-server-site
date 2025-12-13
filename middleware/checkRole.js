@@ -1,11 +1,20 @@
-const checkRole = (allowedRoles) => {
-    return (req, res, next) => {
-        const role = req.user?.role;
+import User from "../models/User.js";
 
-        if (!allowedRoles.includes(role)) {
-            return res.status(403).json({ message: "Forbidden: Access Denied" });
+const checkRole = (allowedRoles) => {
+    return async (req, res, next) => {
+        const firebaseUid = req.user.uid;
+
+        const dbUser = await User.findOne({ uid: firebaseUid });
+
+        if (!dbUser) {
+            return res.status(401).json({ message: "User not found in DB" });
         }
 
+        if (!allowedRoles.includes(dbUser.role)) {
+            return res.status(403).json({ message: "Forbidden" });
+        }
+
+        req.dbUser = dbUser;
         next();
     };
 };
