@@ -8,13 +8,11 @@ const verifyFirebase = async (req, res, next) => {
             return res.status(401).json({ message: "Unauthorized: No Token" });
         }
 
-        const decodedUser = await admin.auth().verifyIdToken(token);
-
-        req.user = decodedUser;
+        const decoded = await admin.auth().verifyIdToken(token);
+        req.user = decoded;
 
         next();
     } catch (error) {
-        console.log("Firebase Auth Error:", error.message);
         return res.status(401).json({ message: "Invalid Firebase Token" });
     }
 };

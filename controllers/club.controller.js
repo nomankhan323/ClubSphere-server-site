@@ -1,14 +1,22 @@
 import Club from "../models/Club.js";
 
 export const createClub = async (req, res) => {
-    const club = await Club.create(req.body);
+    const club = await Club.create({
+        ...req.body,
+        managerEmail: req.dbUser.email,
+        status: "pending",
+        createdAt: new Date(),
+    });
+
     res.json(club);
 };
 
+
 export const getAllClubs = async (req, res) => {
-    const clubs = await Club.find();
+    const clubs = await Club.find({ status: "approved" });
     res.json(clubs);
 };
+
 
 export const approveClub = async (req, res) => {
     const club = await Club.findByIdAndUpdate(
