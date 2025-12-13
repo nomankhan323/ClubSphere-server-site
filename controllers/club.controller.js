@@ -5,18 +5,21 @@ export const createClub = async (req, res) => {
         ...req.body,
         managerEmail: req.dbUser.email,
         status: "pending",
-        createdAt: new Date(),
     });
 
     res.json(club);
 };
-
 
 export const getAllClubs = async (req, res) => {
     const clubs = await Club.find({ status: "approved" });
     res.json(clubs);
 };
 
+export const getClubById = async (req, res) => {
+    const club = await Club.findById(req.params.id);
+    if (!club) return res.status(404).json({ message: "Not found" });
+    res.json(club);
+};
 
 export const approveClub = async (req, res) => {
     const club = await Club.findByIdAndUpdate(
@@ -26,19 +29,4 @@ export const approveClub = async (req, res) => {
     );
 
     res.json(club);
-};
-
-export const getClubById = async (req, res) => {
-    try {
-        const club = await Club.findById(req.params.id);
-
-        if (!club) {
-            return res.status(404).json({ message: "Club not found" });
-        }
-
-        res.json(club);
-
-    } catch (err) {
-        res.status(500).json({ message: "Server Error" });
-    }
 };
